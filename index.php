@@ -7,6 +7,7 @@
  */
 
 session_start();
+session_regenerate_id();
 
 require_once dirname(__FILE__) . '/../../QuantifyMeFramework/includes/includes.php';
 
@@ -70,9 +71,28 @@ if (isset($_REQUEST['noun'])) {
 			$quantifymeAPI->badRequest();
 		}
 
+	} else if ($_REQUEST['noun'] === 'user') {
+		$quantifymeAPI->validateUserEmail();
+		$user = array(
+			'email' => $_REQUEST['email']
+		);
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$quantifymeAPI->createUser($user);
+		} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$quantifymeAPI->getUser($user);
+		} else {
+			$quantifymeAPI->badRequest();
+		}
+	} else if ($_REQUEST['noun'] === 'users') {
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$quantifymeAPI->getUsers();
+		} else {
+			$quantifymeAPI->badRequest();
+		}
 	} else {
 		$quantifymeAPI->resourceNotFound();
 	}
+
 } else {
 	$quantifymeAPI->resourceNotDefined();
 }
@@ -255,6 +275,14 @@ class QuantifyMeAPI
 		}
 	}
 
+	public function validateUserEmail()
+	{
+		$this->_validation->validateUserEmail();
+		if ($this->_validation->getErrorCount() > 0) {
+			$this->validationFailed();
+		}
+	}
+
 	private function validationFailed()
 	{
 		http_response_code(400);
@@ -341,7 +369,7 @@ class QuantifyMeAPI
 	///////////////////////////////////////////////////////////////////////////////
 
 	public function createRecord($record)
-	{
+	{//
 		$date = time();
 		$recordObject = new Record($this->_logger, $this->_mySqlConnect->db);
 		$recordObject->setCreated($date);
@@ -362,6 +390,57 @@ class QuantifyMeAPI
 			http_response_code(201);
 			$this->echoResponse('none', array(), '', 'success', (object)array());
 		}
+		$this->completeRequest();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+	////////////////////////////// USER FUNCTIONS /////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////
+
+	public function createUser($user)
+	{
+		$date = time();
+		$userObject = new User($this->_logger, $this->_mySqlConnect->db);
+		$userObject->setUuid(UUID::getUUID());
+		$userObject->setCreated($date);
+		$userObject->setModified($date);
+		$userObject->setEmail($user['email']);
+
+		if ($userObject->createUser() === FALSE) {
+			http_response_code(500);
+			$errorCode = 'userNotCreated';
+			$friendlyError = 'User could not be created.';
+			$errors = array($friendlyError);
+			$this->echoResponse($errorCode, $errors, $friendlyError, 'fail', (object)array());
+		} else {
+			http_response_code(201);
+			$this->echoResponse('none', array(), '', 'success', (object)array());
+		}
+		$this->completeRequest();
+	}
+
+	public function getUser($user)
+	{
+		$userObject = new User($this->_logger, $this->_mySqlConnect->db, $user['email']);
+		if ($userObject === null) {
+			http_response_code(404);
+			$errorCode = 'userNotFound';
+			$friendlyError = 'User could not be found.';
+			$errors = array($friendlyError);
+			$this->echoResponse($errorCode, $errors, $friendlyError, 'fail', (object)array());
+		} else {
+			$response = $userObject->getUserArray();
+			$this->echoResponse('none', array(), '', 'success', $response);
+		}
+		$this->completeRequest();
+	}
+
+	public function getUsers()
+	{
+		http_response_code(200);
+		$users = User::GetUsersForAPI();
+		$response = $users;
+		$this->echoResponse('none', array(), '', 'success', $response);
 		$this->completeRequest();
 	}
 

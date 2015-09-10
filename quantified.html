@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quantified</title>
+    <link rel="apple-touch-icon" href="quantified-57.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="quantified-72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="quantified-114.png"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="quantified.css">
+</head>
+
+<body>
+<div id="main" class="container">
+
+    <h3>Quantified</h3>
+
+    <div id="categoriesDropdownDiv" class="dropdown">
+        <button id="categoriesDropdownButton" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Categories
+            <span class="caret"></span>
+        </button>
+        <ul id="categoriesDropDownList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        </ul>
+    </div>
+    <input type="text" id="categorySelectedField" name="categorySelected" class="hidden" />
+
+    <div id="actionsDropdownDiv" class="dropdown">
+        <button id="actionsDropdownButton" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Actions
+            <span class="caret"></span>
+        </button>
+        <ul id="actionsDropDownList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        </ul>
+    </div>
+    <input type="text" name="actionSelected" id="actionSelectedField" class="hidden" />
+
+    <div id="detailsFieldDiv" class="input-group">
+        <input type="text" name="details" id="detailsField" class="form-control" placeholder="details" aria-describedby="basic-addon1" maxlength="255" />
+        <span class="input-group-addon">details</span>
+    </div>
+
+    <div id="descriptionTextareaDiv">
+        <textarea id="descriptionTextaera" class="form-control" placeholder="description"></textarea>
+    </div>
+
+    <button type="button" id="recordSubmitButton" class="btn btn-default">Record</button>
+    <div id="recordSubmitResult" class="result alert" role="alert"></div>
+
+    <hr>
+
+    <p>Weight Shortcut</p>
+    <div class="input-group">
+        <input type="text" name="createWeightRecord" id="weightField" class="form-control" placeholder="weight" aria-describedby="basic-addon1" />
+        <span class="input-group-addon">lbs</span>
+    </div>
+    <button type="button" id="weightSubmitButton" class="btn btn-default">Record</button>
+    <div id="weightSubmitResult" class="result alert" role="alert"></div>
+
+    <hr>
+
+    <p>Create Category</p>
+    <input type="text" id="createCategoryField" class="form-control" placeholder="category" aria-describedby="basic-addon1" />
+    <button type="button" id="createCategoryButton" class="btn btn-default">Create</button>
+    <div id="createCategoryResult" class="result alert" role="alert"></div>
+
+    <hr>
+
+    <p>Create Action</p>
+    <div id="createActionCategoriesDropdownDiv" class="dropdown">
+        <button id="createActionCategoriesDropdownButton" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Categories
+            <span class="caret"></span>
+        </button>
+        <ul id="createActionCategoriesDropDownList" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        </ul>
+    </div>
+    <input type="text" id="createActionCategorySelectedField" name="createActionCategorySelected" class="hidden" />
+    <input type="text" id="createActionField" class="form-control" placeholder="action" aria-describedby="basic-addon1" />
+    <button type="button" id="createActionButton" class="btn btn-default">Create</button>
+    <div id="createActionResult" class="result alert" role="alert"></div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="quantified.js"></script>
+
+</body>
+</html>

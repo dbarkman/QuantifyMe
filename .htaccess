@@ -2,4 +2,4 @@ Satisfy Any
 
 RewriteEngine On
 
-RewriteRule ^(category|categories|action|actions|record)?$ index.php?noun=$1 [QSA]
+RewriteRule ^(category|categories|action|actions|record|users|user)?$ index.php?noun=$1 [QSA]
